@@ -1,0 +1,24 @@
+{
+  "name": "receberimagenspatos",
+  "version": "1.0.0",
+  "description": "Aplicação para baixar imagens de servidor FTP",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "keywords": [
+    "ftp",
+    "images",
+    "download"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "basic-ftp": "^5.0.5",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}

@@ -3,7 +3,8 @@ const path = require("path");
 require("dotenv").config();
 
 const LOCAL_PATH = process.env.LOCAL_PATH?.trim() || "./images";
-const JSON_PATH = process.env.JSON_PATH?.trim() || "./documentosgerais.json"; // caminho do json
+const JSON_PATH =
+  process.env.JSON_PATH?.trim() || "./documentosgeraisprincipais.json"; // caminho do json
 
 // Garante que a pasta existe
 if (!fs.existsSync(LOCAL_PATH)) {

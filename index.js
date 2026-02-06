@@ -61,7 +61,40 @@ const stats = {
   missing: 0,
   missingList: [],
   skipped: expectedImages.length - normalizedImages.length,
+  deleted: 0,
+  deletedList: [],
 };
+
+const expectedSet = new Set(
+  normalizedImages.map((item) => item.replace(/\\/g, "/")),
+);
+
+const listFilesRecursively = (dir) => {
+  const entries = fs.readdirSync(dir, { withFileTypes: true });
+  const files = [];
+
+  for (const entry of entries) {
+    const fullPath = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      files.push(...listFilesRecursively(fullPath));
+    } else if (entry.isFile()) {
+      files.push(fullPath);
+    }
+  }
+
+  return files;
+};
+
+const localFiles = listFilesRecursively(LOCAL_PATH);
+for (const filePath of localFiles) {
+  const relativePath = path.relative(LOCAL_PATH, filePath).replace(/\\/g, "/");
+
+  if (!expectedSet.has(relativePath)) {
+    fs.unlinkSync(filePath);
+    stats.deleted++;
+    stats.deletedList.push(relativePath);
+  }
+}
 
 for (const item of normalizedImages) {
   // se no JSON você só tiver o nome do arquivo:
@@ -84,6 +117,7 @@ console.log(`❌ Ausentes: ${stats.missing}`);
 if (stats.skipped) {
   console.log(`⚠️  Ignoradas: ${stats.skipped}`);
 }
+console.log(`🗑️  Excluidas: ${stats.deleted}`);
 
 if (stats.missingList.length) {
   console.log("\n❌ Lista de imagens ausentes:");
